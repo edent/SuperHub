@@ -25,34 +25,51 @@ downstream = urllib2.urlopen(SuperHubIP + "cgi-bin/VmRouterStatusDownstreamCfgCg
 up_soup = BeautifulSoup(upstream.read())
 down_soup = BeautifulSoup(downstream.read())
 
-# A particularly lazy way to find the Upstream power levels
-all_us_td = up_soup.find_all('td')
+# Find the Upstream power levels
+'''
+<tr>
+	<td class="title">Power Level (dBmV)</td>
+	<td>41.00</td>
+	<td>N/A</td>
+	<td>N/A</td>
+	<td>45.00</td>
+</tr>
+'''
+us_power_label = up_soup.find(text="Power Level (dBmV)")
+us_power_table = us_power_label.parent.parent
+us_power = us_power_table.findAll('td')
 
 # Currently, Virgin Media only uses US-1 and US-4. This may change in the future.
-us1_power = all_us_td[36].text
-us4_power = all_us_td[39].text
+us1_power = us_power[1].text
+us4_power = us_power[4].text
 
-# Again, lazy way to find Downstream levels
-all_ds_td = down_soup.find_all('td')
+# Find Downstream levels
+ds_power_label = down_soup.find(text="Power Level (dBmV)")
+ds_power_table = ds_power_label.parent.parent
+ds_power = ds_power_table.findAll('td')
 
 # Currently, VM only uses 8 DS channels
-ds1_power = all_ds_td[55].text
-ds2_power = all_ds_td[56].text
-ds3_power = all_ds_td[57].text
-ds4_power = all_ds_td[58].text
-ds5_power = all_ds_td[59].text
-ds6_power = all_ds_td[60].text
-ds7_power = all_ds_td[61].text
-ds8_power = all_ds_td[62].text
+ds1_power = ds_power[1].text
+ds2_power = ds_power[2].text
+ds3_power = ds_power[3].text
+ds4_power = ds_power[4].text
+ds5_power = ds_power[5].text
+ds6_power = ds_power[6].text
+ds7_power = ds_power[7].text
+ds8_power = ds_power[8].text
 
-ds1_rx = all_ds_td[64].text
-ds2_rx = all_ds_td[65].text
-ds3_rx = all_ds_td[66].text
-ds4_rx = all_ds_td[67].text
-ds5_rx = all_ds_td[68].text
-ds6_rx = all_ds_td[69].text
-ds7_rx = all_ds_td[70].text
-ds8_rx = all_ds_td[71].text
+ds_rx_label = down_soup.find(text="RxMER (dB)")
+ds_rx_table = ds_rx_label.parent.parent
+ds_rx = ds_rx_table.findAll('td')
+
+ds1_rx = ds_rx[1].text
+ds2_rx = ds_rx[2].text
+ds3_rx = ds_rx[3].text
+ds4_rx = ds_rx[4].text
+ds5_rx = ds_rx[5].text
+ds6_rx = ds_rx[6].text
+ds7_rx = ds_rx[7].text
+ds8_rx = ds_rx[8].text
 
 # Append the details to the end of a .CSV file
 with open('vm.csv', 'a') as csvfile:
