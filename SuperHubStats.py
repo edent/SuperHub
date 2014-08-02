@@ -41,6 +41,8 @@ us_power = us_power_table.findAll('td')
 
 # Currently, Virgin Media only uses US-1 and US-4. This may change in the future.
 us1_power = us_power[1].text
+us2_power = us_power[2].text
+us3_power = us_power[3].text
 us4_power = us_power[4].text
 
 # Find Downstream levels
@@ -74,7 +76,7 @@ ds8_rx = ds_rx[8].text
 # Append the details to the end of a .CSV file
 with open('vm.csv', 'a') as csvfile:
     csv_writer = csv.writer(csvfile)
-    csv_writer.writerow([timestamp,us1_power,us4_power,ds1_power,ds2_power,ds3_power,ds4_power,ds5_power,ds6_power,ds7_power,ds8_power,ds1_rx,ds2_rx,ds3_rx,ds4_rx,ds5_rx,ds6_rx,ds7_rx,ds8_rx])
+    csv_writer.writerow([timestamp,us1_power,us2_power,us3_power,us4_power,ds1_power,ds2_power,ds3_power,ds4_power,ds5_power,ds6_power,ds7_power,ds8_power,ds1_rx,ds2_rx,ds3_rx,ds4_rx,ds5_rx,ds6_rx,ds7_rx,ds8_rx])
 
 # All done. Bye-bye!
 exit()
